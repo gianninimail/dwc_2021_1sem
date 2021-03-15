@@ -1,25 +1,29 @@
 package control;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.Pessoa;
+import util.PessoaService;
+
 /**
- * Servlet implementation class PrimeiroServlet
+ * Servlet implementation class ListarPessoaServlet
  */
-@WebServlet("/PrimeiroServlet")
-public class PrimeiroServlet extends HttpServlet {
+@WebServlet("/ListarPessoaServlet")
+public class ListarPessoaServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public PrimeiroServlet() {
+    public ListarPessoaServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -28,21 +32,17 @@ public class PrimeiroServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		try {
 			
-			PrintWriter out = response.getWriter();
+			PessoaService service = new PessoaService();
 			
-			out.println("<html>");
-			out.println("<head>");
-			out.println("<title>Primeiro Servlet</title>");
-			out.println("</head>");
-			out.println("<body>");
-			out.println("<h1>Meu primeiro Software Web Java EE</h1>");
-			int resultado = 3 + 5;
-			out.println("<p>Resultado da soma é : " + resultado + "</p1>");
-			out.println("</body>");
-			out.println("</html>");
+			List<Pessoa> pessoas = service.getListaDePessoas();
+			
+			request.setAttribute("lista", pessoas);
+			
+			RequestDispatcher redirecionador = request.getRequestDispatcher("/listar_pessoas.jsp");
+			
+			redirecionador.forward(request, response);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
